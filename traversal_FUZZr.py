@@ -8,15 +8,23 @@ def print_info(delay_time, url, wordlist, hide_codes, user_agent, timeout, trave
     print(f"\t\tDelay: {delay_time} sec")
     print(f"\t\tURL: {url}")
     print(f"\t\tWordlist: ")
-    [print("\t\t\t"+i) for i in wordlist[:4]]
-    print("\t\t\tmore...")
+    try:
+        [print("\t\t\t"+i) for i in wordlist[:4]]
+        print("\t\t\tmore...")
+    except:
+        wordlist = ['']
+        pass
     print(f"\t\tTraversal Path Wordlist:")
     [print("\t\t\t"+i) for i in traversal_wordlist[:4]]
     print("\t\t\tmore...")
     print(f"\t\tHide codes: {hide_codes}")
     print(f"\t\tUser-Agent: {user_agent}")
     print(f"\t\tRequest timeout: {timeout} sec")
-    print(f"\t\tTime to process is {len(wordlist)*len(traversal_wordlist)*(delay_time+0.5)/60} minutes...")
+    hours = len(wordlist)*len(traversal_wordlist)*(delay_time+0.1)/60/60
+    time = f"{hours} hours."
+    if hours < 1:
+        time = f"{len(wordlist)*len(traversal_wordlist)*(delay_time+0.1)/60/60} minutes."
+    print(f"\t\tTime to process is " + time)
     print()
 
 def main():
@@ -26,12 +34,22 @@ def main():
     hide_codes = str(get_param_value('-hc')).split(',')
     user_agent = get_param_value('-UA')
     timeout = float(get_param_value('-TO'))
-    nr_dots = int(get_param_value('-nr_dots'))
-    encode = str_to_bool(get_param_value('-encode'))
-    print('Initiating script...')
-    traversal_wordlist = list(paths_with_slashes(nr_dots, encode=encode))
-    loading_dots(1)
-    os.system('clear')
+    traversal_wordlist = array_from_wordlist(get_param_value('-tw'))
+    start_dir = get_param_value('-start_dir')
+    try:
+        nr_dots = int(get_param_value('-nr_dots'))
+    except TypeError:
+        nr_dots = None
+    try:
+        encode = str_to_bool(get_param_value('-encode'))
+    except TypeError:
+        encode = None
+
+    if not traversal_wordlist:
+        print('Generating traversal paths')
+        traversal_wordlist = list(paths_with_slashes(nr_dots, encode=encode))
+        loading_dots(1)
+        os.system('clear')
     print_info(delay_time, url, wordlist, hide_codes, user_agent, timeout, traversal_wordlist)
     loading_dots(30, "\t\tStarts in 30 seconds")
     print()
@@ -40,10 +58,10 @@ def main():
     
     if is_valid_url(url) and delay_time > 0:
         # GET request
-        for i in wordlist:
+        for i in wordlist if wordlist else range(1):
             for j in traversal_wordlist:
-                fuzzed_url = url.replace('TFUZZ', j).replace('FUZZ', i)
-                response = get_request(url.replace('TFUZZ', j).replace('FUZZ', i), headers={'User-Agent': user_agent}, timeout=timeout)
+                fuzzed_url = (url).replace('TFUZZ', './'+start_dir+'/'+j if start_dir else j).replace('FUZZ', str(i) if wordlist else '')
+                response = get_request(fuzzed_url, headers={'User-Agent': user_agent}, timeout=timeout)
                 if str(response.status_code) not in hide_codes:
                     print(f"\t\t\tURL: {fuzzed_url}")
                     print(f"\t\t\tWord: {i}")

@@ -8,8 +8,7 @@ def get_param_value(param: str):
         try:
             value = sys.argv[i]
         except:
-            print(f'{param} is wrong, closing the program.')
-            exit(0)
+            return None
         return value
     
 from urllib.parse import urlparse
@@ -22,12 +21,16 @@ def is_valid_url(url: str):
     return False
 
 def array_from_wordlist(filepath: str):
-    with open(filepath, 'r') as f:
-        arr = f.readlines()
-    res = []
-    for i in arr:
-        res.append(i.replace('\n', ''))
-    return res
+    try:
+        with open(filepath, 'r') as f:
+            arr = f.readlines()
+        res = []
+        for i in arr:
+            res.append(i.replace('\n', ''))
+        return res
+    except TypeError:
+        return None
+
 
 import time
 
@@ -50,7 +53,7 @@ def loading_dots(delay_time: float, text: str = ""):
     sys.stdout.flush()
 
     
-def paths_with_slashes(x, path="", index=1, encode: bool = False):
+def paths_with_slashes(x, path=".", index=1, encode: bool = False):
     # If the path length reaches x (number of dots), return the path
     if index == x:
         if encode:
@@ -60,20 +63,15 @@ def paths_with_slashes(x, path="", index=1, encode: bool = False):
         return
     
     # Recursively add each possible slash option after the dot
-    # Continue the path with a dot
-    yield from paths_with_slashes(x, path + "/..", index + 1, encode=encode)
+    # Continue the path with a dot dot
+    yield from paths_with_slashes(x, path + "/..", index + 1, encode)
 
     # Continue the path with a dot
-    yield from paths_with_slashes(x, path + ".", index + 1, encode=encode)
+    yield from paths_with_slashes(x, path + ".", index + 1, encode)
 
-    # Continue the path with a slash dot dot
-    yield from paths_with_slashes(x, path + "/.", index + 1, encode=encode)
-    
-    # Add backslash and a dot
-    yield from paths_with_slashes(x, path + "\\..", index + 1, encode=encode)
+    # Continue the path with a slash dot
+    yield from paths_with_slashes(x, path + "/.", index + 1, encode)
 
-    # Add backslash and a dot
-    yield from paths_with_slashes(x, path + "\\.", index + 1, encode=encode)
 
 
 def str_to_bool(s):

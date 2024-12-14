@@ -14,10 +14,19 @@ def download_file():
     if not filename:
         return "No filename provided", 400
 
-    # Construct the full file path (without sanitization)
+    # Sanitize the filename by normalizing the path
+    # Construct the full file path
     file_path = os.path.join(BASE_DIR, filename)
-    print(file_path)
-    # Check if the file exists, but no sanitization is performed here
+
+    # Normalize the file path to prevent directory traversal
+    # This ensures we are working with an absolute path within BASE_DIR
+    file_path = os.path.abspath(file_path)
+
+    # Check if the file path is within the allowed BASE_DIR
+    #if not file_path.startswith(os.path.abspath(BASE_DIR)):
+    #    return abort(403)  # Forbidden: file is outside the allowed directory
+
+    # Check if the file exists
     if os.path.exists(file_path):
         return send_file(file_path)
     else:
