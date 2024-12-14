@@ -1,4 +1,2 @@
-TraversalFUZZr.py
-common.py
-etc/passwd
-etc/hosts
+/etc/passwd
+/etc/hosts

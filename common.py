@@ -1,4 +1,5 @@
 import sys
+import urllib
 
 def get_param_value(param: str):
     # delay in sec
@@ -40,10 +41,46 @@ def loading_dots(delay_time: float, text: str = ""):
         for num_dots in dot_sequence:
             sys.stdout.write('.' * num_dots)
             sys.stdout.flush()
-            time.sleep(0.5)
-            sleep_time += 0.5
+            time.sleep(0.1)
+            sleep_time += 0.1
             # Clear the current line by printing spaces and moving the cursor back
             sys.stdout.write('\b' * num_dots + ' ' * num_dots + num_dots * '\b')
             num = num_dots
     sys.stdout.write('\b' * len(text) + ' ' * (len(text) + num) + '\r')
     sys.stdout.flush()
+
+    
+def paths_with_slashes(x, path="", index=1, encode: bool = False):
+    # If the path length reaches x (number of dots), return the path
+    if index == x:
+        if encode:
+            yield urllib.parse.quote(path)
+        else:
+            yield path
+        return
+    
+    # Recursively add each possible slash option after the dot
+    # Continue the path with a dot
+    yield from paths_with_slashes(x, path + "/..", index + 1, encode=encode)
+
+    # Continue the path with a dot
+    yield from paths_with_slashes(x, path + ".", index + 1, encode=encode)
+
+    # Continue the path with a slash dot dot
+    yield from paths_with_slashes(x, path + "/.", index + 1, encode=encode)
+    
+    # Add backslash and a dot
+    yield from paths_with_slashes(x, path + "\\..", index + 1, encode=encode)
+
+    # Add backslash and a dot
+    yield from paths_with_slashes(x, path + "\\.", index + 1, encode=encode)
+
+
+def str_to_bool(s):
+    s = s.strip().lower()  # Remove any surrounding whitespace and convert to lowercase
+    if s in ['true', '1', 't', 'y', 'yes']:
+        return True
+    elif s in ['false', '0', 'f', 'n', 'no']:
+        return False
+    else:
+        raise ValueError(f"Invalid value for boolean: {s}")
