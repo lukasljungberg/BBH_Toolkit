@@ -1,6 +1,11 @@
 import sys
 import urllib
 import json
+from pprint import pprint
+
+def print_help():
+    with open('help'+sys.argv[0].replace('.py', '').replace('/', ''), 'r') as f:
+        pprint(f.read().replace("'", ""), indent=8)
 
 def read_json(fp: str) -> dict:
     with open(fp, 'r') as f:

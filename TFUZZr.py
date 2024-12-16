@@ -1,12 +1,20 @@
 #!./venv/bin/python
-from common import is_valid_url, array_from_wordlist, loading_dots, paths_with_slashes, str_to_bool, read_json, write_to_found_vulns, print_info, encode
+from common import is_valid_url, array_from_wordlist
+from common import loading_dots, paths_with_slashes
+from common import str_to_bool, read_json, write_to_found_vulns
+from common import print_info, encode, print_help
 from requests import get as get_request
 import sys
 import os
-
+from pprint import pprint
 def main():
     json_dict = read_json('./TFUZZr.conf.json')
-
+    if set(['-h', '--help', '--conf']) & set(sys.argv):
+        print(10*'-'+'Help is coming!'+'-'*10)
+        print('Read the config below:')
+        pprint(json_dict)
+        print_help()
+        sys.exit(0)
     print('Generating traversal paths')
     if json_dict.get('Auto-Path'):
         traversal_wordlist = list(paths_with_slashes(json_dict.get('Nr-Dots'), 

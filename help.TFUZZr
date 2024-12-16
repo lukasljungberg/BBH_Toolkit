@@ -1,0 +1,16 @@
+
+
+--------- HElP ---------------------
+Delay: This is a single-line comment
+Wordlist: Wordlist to use
+URLs: urls to scan
+Hide-Codes: response codes to Hide e.g. [404,403]
+User-Agent: user agent in request
+Auto-Path: generate a traversal path auto e.g. true/false
+Timeout: How long a request can take before it throws an error
+Start-Dir: how to start the dir path for traversal path eg. / or ./ or /file
+Nr-Dots: how long the traversal path will be. [int]
+Encode-Payload: true if fuzzed payload should be encoded to url
+System: lin / win --- for future implementation
+Run-4-Ever: or exit when vuln is found
+--------- HElP ENDS ------------------
