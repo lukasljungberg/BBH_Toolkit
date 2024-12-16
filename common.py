@@ -1,5 +1,11 @@
 import sys
 import urllib
+import json
+
+def read_json(fp: str) -> dict:
+    with open(fp, 'r') as f:
+        json_dict = json.load(f)
+    return json_dict
 
 def get_param_value(param: str):
     # delay in sec
@@ -52,6 +58,9 @@ def loading_dots(delay_time: float, text: str = ""):
     sys.stdout.write('\b' * len(text) + ' ' * (len(text) + num) + '\r')
     sys.stdout.flush()
 
+def encode(encoding: str = 'url', text: str = "") -> str:
+    if encoding == 'url':
+        return urllib.parse.quote(text)
     
 def paths_with_slashes(x, path=".", index=1, encode: bool = False):
     # If the path length reaches x (number of dots), return the path
@@ -72,13 +81,33 @@ def paths_with_slashes(x, path=".", index=1, encode: bool = False):
     # Continue the path with a slash dot
     yield from paths_with_slashes(x, path + "/.", index + 1, encode)
 
-
-
 def str_to_bool(s):
-    s = s.strip().lower()  # Remove any surrounding whitespace and convert to lowercase
-    if s in ['true', '1', 't', 'y', 'yes']:
+    if type(s) == str:
+        s = s.strip().lower()  # Remove any surrounding whitespace and convert to lowercase
+    elif s in ['true', '1', 't', 'y', 'yes']:
         return True
     elif s in ['false', '0', 'f', 'n', 'no']:
         return False
+    elif type(s) == bool:
+        return s
     else:
         raise ValueError(f"Invalid value for boolean: {s}")
+    
+def write_to_found_vulns(text: str):
+    import os
+    if not os.path.exists('./FOUND_VULNS'):
+        with open('./FOUND_VULNS', 'w') as f:
+            f.write('')
+
+    with open('./FOUND_VULNS', 'a') as f:
+        f.write(text)
+    print(text)
+
+def print_info(json_dict: dict):
+    for key, value in json_dict.items():
+        if type(value) == list:
+            print(key + ':')
+            for i in range(4) if len(value) >= 4 else range(len(value)):
+                print('\t', value[i])
+        else:
+            print(key + ': ' + str(value))

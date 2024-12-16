@@ -1,0 +1,17 @@
+{
+  "Delay": 3.0,
+  "Wordlist": "./fake_wordlist.txt",
+  "URLs": [
+    "http://127.0.0.1:4444/api?filename=TFUZZFUZZ",
+    "http://127.0.0.1:4444/api/secured?filename=TFUZZFUZZ"
+  ],
+  "Hide-Codes": [403],
+  "User-Agent": "[default-pentest]",
+  "Auto-Path": true,
+  "Timeout": 2.0,
+  "Start-Dir": "./",
+  "Nr-Dots": 2,
+  "Encode-Payload": true,
+  "System": "lin",
+  "Run-4-Ever": true
+}

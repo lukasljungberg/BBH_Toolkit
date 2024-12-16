@@ -1,4 +1,3 @@
 /etc/hosts
 /etc/passwd
-/test
-
+/files/test
