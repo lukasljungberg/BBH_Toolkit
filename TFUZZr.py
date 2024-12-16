@@ -30,7 +30,6 @@ def main():
     hide_codes = json_dict.get('Hide-Codes')
     for url in urls:
         if is_valid_url(url) and delay > 0:
-            # GET request
             for i in wordlist:
                 print(i)
                 for j in traversal_wordlist:
