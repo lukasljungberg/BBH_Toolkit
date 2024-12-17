@@ -3,6 +3,28 @@ import urllib
 import json
 from pprint import pprint
 
+def change_config(config_fp: str):
+    type_map = {
+        int: int,
+        float: float,
+        dict: dict,
+        str: str,
+        bool: bool,
+        list: list,
+    }
+    with open(config_fp, 'r') as f:
+        config = dict(json.load(f))
+        for key, value in config.items():
+            inp_str = input(f"Change {key}:| {str(value).replace('[', '').replace(']', '').replace(' ', '')} ({type(value).__name__}) |->")
+            inp_str = inp_str.split(',') if ',' in inp_str else inp_str
+            inp_str = str_to_bool(inp_str)
+            config[key] = type_map.get(type(value))(inp_str) if inp_str != "" else config[key]
+        change_json(config_fp, config)
+
+def change_json(fp: str, new_dict: dict):
+    with open(fp, 'w') as f:
+        json.dump(new_dict, f)
+
 def print_help():
     with open('help'+sys.argv[0].replace('.py', '').replace('/', ''), 'r') as f:
         pprint(f.read().replace("'", ""), indent=8)
@@ -17,10 +39,9 @@ def get_param_value(param: str):
     if param in sys.argv:
         i = sys.argv.index(param) + 1
         try:
-            value = sys.argv[i]
+            return sys.argv[i]
         except:
             return None
-        return value
     
 from urllib.parse import urlparse
 
@@ -89,24 +110,29 @@ def paths_with_slashes(x, path=".", index=1, encode: bool = False):
 def str_to_bool(s):
     if type(s) == str:
         s = s.strip().lower()  # Remove any surrounding whitespace and convert to lowercase
-    elif s in ['true', '1', 't', 'y', 'yes']:
+    if s in ['true', '1', 't', 'y', 'yes']:
         return True
     elif s in ['false', '0', 'f', 'n', 'no']:
         return False
-    elif type(s) == bool:
-        return s
     else:
-        raise ValueError(f"Invalid value for boolean: {s}")
-    
-def write_to_found_vulns(text: str):
+        return s
+
+def get_found_vulns_fp(website):
+    return './'+website.replace('http://', '').replace('https://', '').split('/')[0].split(':')[0]+'_FOUND_VULNS'
+
+def write_to_found_vulns(text: str, found: bool = True, website: str = 'localhost'):
     import os
-    if not os.path.exists('./FOUND_VULNS'):
-        with open('./FOUND_VULNS', 'w') as f:
+    path = get_found_vulns_fp(website)
+    if not os.path.exists(path):
+        with open(path, 'w') as f:
             f.write('')
 
-    with open('./FOUND_VULNS', 'a') as f:
-        f.write(text)
-    print(text)
+    with open(path, 'a') as f:
+        out = text
+        if found:
+            out = '\n'+'-'*10+'Potential Vulnerability found!!!'+'-'*10+'\n'+text+'\n'
+        f.write(out)
+    print(out)
 
 def print_info(json_dict: dict):
     for key, value in json_dict.items():

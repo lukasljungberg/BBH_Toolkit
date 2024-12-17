@@ -1,3 +1,4 @@
 /etc/hosts
 /etc/passwd
 /files/test
+/uploads/vuln.txt

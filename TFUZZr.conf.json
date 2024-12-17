@@ -1,17 +1,18 @@
 {
-  "Delay": 3.0,
+  "Delay": 5.0,
   "Wordlist": "./fake_wordlist.txt",
+  "Param-Wordlist": "./parameter_wordlist.txt",
   "URLs": [
-    "http://127.0.0.1:4444/api?filename=TFUZZFUZZ",
-    "http://127.0.0.1:4444/api/secured?filename=TFUZZFUZZ"
+    "http://localhost:4444/api?PFUZZ=TFUZZFUZZ",
+    "http://localhost:4444/api/secured?PFUZZ=TFUZZFUZZ"
   ],
-  "Hide-Codes": [403],
+  "Hide-Codes": ["403", "404", "400"],
   "User-Agent": "[default-pentest]",
-  "Auto-Path": true,
-  "Timeout": 2.0,
-  "Start-Dir": "./",
-  "Nr-Dots": 2,
-  "Encode-Payload": true,
+  "Auto-Path": false,
+  "Timeout": 4.0,
+  "Start-Dir": "/",
+  "Nr-Dots": 4,
+  "Encode-Payload": false,
   "System": "lin",
-  "Run-4-Ever": true
+  "Run-4-Ever": false
 }

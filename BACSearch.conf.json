@@ -1,0 +1,12 @@
+{
+  "base_url": "http://localhost:4444",
+  "vulnerable_paths": ["/uploads", "/api", "/api/secured"],
+  "auth_headers": {
+    "User-Agent": "BAC Vulnerability Scanner",
+    "Authorization": "Bearer your_secret_bearer_token"
+  },
+  "unauth_headers": { "User-Agent": "BAC Vulnerability Scanner" },
+  "traversal": false,
+  "delay": 3,
+  "fuzz_param": "?PFUZZ=TFUZZFUZZ"
+}
