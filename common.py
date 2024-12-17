@@ -3,6 +3,23 @@ import urllib
 import json
 from pprint import pprint
 
+def get_config():
+    config_fp = sys.argv[0].replace('./', '').replace('.py', '') + '.conf.json'
+    json_dict = read_json(config_fp)
+    if set(['-h', '--help']) & set(sys.argv):
+        print(10*'-'+'Help is coming!'+'-'*10)
+        print_help()
+        sys.exit(0)
+
+    if set(['--configure', '-conf']) & set(sys.argv):
+        print('Read the config below:')
+        pprint(json_dict)
+        change = input('Change config? | y/N | ->')
+        if change.lower() == 'y':
+            change_config(config_fp)
+        sys.exit(0)
+    return json_dict, config_fp
+
 def change_config(config_fp: str):
     type_map = {
         int: int,
@@ -10,7 +27,7 @@ def change_config(config_fp: str):
         dict: dict,
         str: str,
         bool: bool,
-        list: list,
+        list: list
     }
     with open(config_fp, 'r') as f:
         config = dict(json.load(f))

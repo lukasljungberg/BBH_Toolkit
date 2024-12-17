@@ -1,7 +1,7 @@
 #!./venv/bin/python
 import os
 from pprint import pprint
-from common import change_config, get_param_value, print_help
+from common import change_config, get_config, get_param_value, print_help
 from common import read_json, str_to_bool
 from common import write_to_found_vulns, get_found_vulns_fp
 from common import change_json, loading_dots
@@ -9,30 +9,15 @@ import requests
 import sys
 from TFUZZr import one_url
 
-def check_bac(fuzz: bool = False):
+def main(fuzz: bool = False):
     """
     Function to check for potential Broken Access Control (BAC) vulnerabilities
     by testing known vulnerable paths with and without authentication.
     """
-    config_fp = sys.argv[0].replace('./', '').replace('.py', '') + '.conf.json'
-    json_dict = read_json(config_fp)
-    if set(['-h', '--help']) & set(sys.argv):
-        print(10*'-'+'Help is coming!'+'-'*10)
-        print_help()
-        sys.exit(0)
-
-    if set(['--configure', '-conf']) & set(sys.argv):
-        print('Read the config below:')
-        pprint(json_dict)
-        change = input('Change config? y/N')
-        if change.lower() == 'y':
-            change_config(config_fp)
-        sys.exit(0)
+    json_dict, config_fp = get_config()
 
     url = json_dict.get('base_url')
     vulnerable_paths = json_dict.get('vulnerable_paths')
-    if os.path.exists(get_found_vulns_fp(url)):   
-        write_to_found_vulns(text="____BAC_VULNS____\n", found=False, website=url)
     unauth_headers = json_dict.get('unauth_headers')
     # Assume unauthenticated access first (public access)
     response_unauth = requests.get(url, headers=unauth_headers)
@@ -46,7 +31,10 @@ def check_bac(fuzz: bool = False):
         print(f"No vuln paths left to check for {url}\nExiting!")
         sys.exit(2)
     for path in vulnerable_paths:
-        kwargs = {'fuzz': fuzz, 'path': path, 'url': url, 'config_fp': config_fp, 'json_dict': json_dict, 'unauth_headers': unauth_headers}
+        kwargs = {'fuzz': fuzz, 'path': path, 
+                  'url': url, 'config_fp': config_fp, 
+                  'json_dict': json_dict, 'unauth_headers': unauth_headers, 
+                  'config_fp': config_fp}
         do_check(**kwargs)
 
 def do_check(**kwargs):
@@ -56,6 +44,7 @@ def do_check(**kwargs):
     url = kwargs['url']
     path = kwargs['path']
     path = kwargs['path']
+    config_fp = kwargs['config_fp']
     unauth_headers = kwargs['unauth_headers']
     try:
         print(f"\nTesting vulnerable path: {path}")
@@ -103,4 +92,4 @@ def do_check(**kwargs):
 
 if __name__ == '__main__':
     fuzz = str_to_bool(get_param_value('-f'))
-    check_bac(fuzz)
+    main(fuzz)
