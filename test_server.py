@@ -1,5 +1,6 @@
 from flask import Flask, Response, send_file, request, abort, jsonify
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -9,6 +10,13 @@ BASE_DIR = 'files'
 def index():
     return Response(200)
 
+@app.route('/time', methods=['GET'])
+def get_time():
+    f = request.args.get('format')
+    # Get the current time
+    current_time = datetime.now().strftime(f)
+    print(current_time)
+    return Response(200)
 @app.route('/api', methods=['GET'])
 def download_file():
     # Get the filename from the query string

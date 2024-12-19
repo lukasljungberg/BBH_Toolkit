@@ -3,8 +3,13 @@ import urllib
 import json
 from pprint import pprint
 
-def get_config():
-    config_fp = sys.argv[0].replace('./', '').replace('.py', '') + '.conf.json'
+def get_config(alt_fp: str = ""):
+
+    if alt_fp == "":
+        config_fp = sys.argv[0].replace('./', '').replace('.py', '') + '.conf.json'
+    else:
+        config_fp = alt_fp
+    print(config_fp)
     json_dict = read_json(config_fp)
     if set(['-h', '--help']) & set(sys.argv):
         print(10*'-'+'Help is coming!'+'-'*10)
@@ -14,13 +19,15 @@ def get_config():
     if set(['--configure', '-conf']) & set(sys.argv):
         print('Read the config below:')
         pprint(json_dict)
-        change = input('Change config? | y/N | ->')
-        if change.lower() == 'y':
-            change_config(config_fp)
-        sys.exit(0)
+        while True:
+            keyname = input('Change config? | Enter key | ->')
+            if keyname in json_dict.keys():
+                change_config(config_fp, keyname)
+            else:
+                print("Key does not exist!")
     return json_dict, config_fp
 
-def change_config(config_fp: str):
+def change_config(config_fp: str, key: str):
     type_map = {
         int: int,
         float: float,
@@ -31,11 +38,10 @@ def change_config(config_fp: str):
     }
     with open(config_fp, 'r') as f:
         config = dict(json.load(f))
-        for key, value in config.items():
-            inp_str = input(f"Change {key}:| {str(value).replace('[', '').replace(']', '').replace(' ', '')} ({type(value).__name__}) |->")
-            inp_str = inp_str.split(',') if ',' in inp_str else inp_str
-            inp_str = str_to_bool(inp_str)
-            config[key] = type_map.get(type(value))(inp_str) if inp_str != "" else config[key]
+        inp_str = input(f"Change {key}:| {str(config[key]).replace('[', '').replace(']', '').replace(' ', '')} ({type(config[key]).__name__}) |->")
+        inp_str = inp_str.split(',') if ',' in inp_str else inp_str
+        inp_str = str_to_bool(inp_str)
+        config[key] = type_map.get(type(config[key]))(inp_str) if inp_str != "" else config[key]
         change_json(config_fp, config)
 
 def change_json(fp: str, new_dict: dict):
