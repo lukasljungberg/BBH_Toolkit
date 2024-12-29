@@ -49,7 +49,7 @@ def change_json(fp: str, new_dict: dict):
         json.dump(new_dict, f)
 
 def print_help():
-    with open('help'+sys.argv[0].replace('.py', '').replace('/', ''), 'r') as f:
+    with open('help.'+sys.argv[0].replace('.py', '').replace('/', ''), 'r') as f:
         pprint(f.read().replace("'", ""), indent=8)
 
 def read_json(fp: str) -> dict:
