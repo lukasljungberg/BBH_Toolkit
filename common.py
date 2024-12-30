@@ -3,6 +3,15 @@ import urllib
 import json
 from pprint import pprint
 
+# Function to load wordlist from file
+def load_wordlist(filename):
+    try:
+        with open(filename, 'r') as file:
+            return [line.strip() for line in file.readlines()]
+    except FileNotFoundError:
+        print(f"Wordlist {filename} not found!")
+        return []
+
 def get_config(alt_fp: str = ""):
 
     if alt_fp == "":
